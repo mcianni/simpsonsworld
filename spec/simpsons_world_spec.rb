@@ -2,7 +2,6 @@ require 'spec_helper'
 require 'fileutils'
 
 describe SimpsonsWorld do
-  #SimpsonsWorld::DATA_DIR = File.join(File.dirname(__FILE__), "data")
   EPISODE_COUNT = 5
 
   let(:data) { 
@@ -10,15 +9,16 @@ describe SimpsonsWorld do
       { title: "Episode #{i}", description: "Description #{i}", url: "/path/#{i}" }
     }]
   }
+  
+  let(:data2) { data.tap { |i| i[0] = 2 } }
 
-  def create_season
-    @season = SimpsonsWorld::Season.new(*data)
+  def create_season d=data
+    @season = SimpsonsWorld::Season.new(*d)
   end
 
   def purge_test_data
     FileUtils.rm_rf(File.dirname(__FILE__) + "/data/*")
   end
-
   #it 'successfully parses the current markup' do
   #  expect{ SimpsonsWorld::Scrape.all }.to_not raise_error
   #end
@@ -44,9 +44,16 @@ describe SimpsonsWorld do
  
   it "should save the data to file" do
     purge_test_data
-    #puts SimpsonsWorld::DATA_DIR
     create_season.save
-    expect File.exists?(SimpsonsWorld::DATA_DIR + "/season-#{@season.number}.yml")
+    expect File.exists?(File.join(SimpsonsWorld::DATA_DIR, "season-#{@season.number}.yml"))
   end
 
+  it "should save multiple seasons to multiple files" do
+    purge_test_data
+    create_season.save
+    expect File.exists?(File.join(SimpsonsWorld::DATA_DIR, "season-#{@season.number}.yml"))
+
+    create_season(data2).save
+    expect File.exists?(File.join(SimpsonsWorld::DATA_DIR, "season-#{@season.number}.yml"))
+  end
 end

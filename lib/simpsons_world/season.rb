@@ -16,7 +16,7 @@ module SimpsonsWorld
     end
 
     def save
-      File.open("#{DATA_DIR}/season-#{@number}.yml", 'w') do |file|
+      File.open(File.join(DATA_DIR, "season-#{@number}.yml"), 'w') do |file|
         file.write [@number, @episodes].to_yaml
       end
     end
