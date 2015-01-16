@@ -1,6 +1,8 @@
 module SimpsonsWorld
+  #DATA_DIR = File.join(File.dirname(__FILE__), "..", "data")
 
   class Season
+    require 'yaml'
     attr_reader :number, :episodes
 
     def initialize number, episodes
@@ -14,6 +16,9 @@ module SimpsonsWorld
     end
 
     def save
+      File.open("#{DATA_DIR}/season-#{@number}.yml", 'w') do |file|
+        file.write [@number, @episodes].to_yaml
+      end
     end
 
   end
