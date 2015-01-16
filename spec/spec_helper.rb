@@ -1,0 +1,1 @@
+require 'simpsons_world'
