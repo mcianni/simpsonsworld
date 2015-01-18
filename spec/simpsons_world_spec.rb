@@ -27,6 +27,7 @@ describe SimpsonsWorld do
   def purge_test_data
     FileUtils.rm_rf(File.dirname(__FILE__) + "/data/*")
   end
+
   #it 'successfully parses the current markup' do
   #  expect{ SimpsonsWorld::Scrape.all }.to_not raise_error
   #end
@@ -63,13 +64,25 @@ describe SimpsonsWorld do
     expect( Dir[File.join(SimpsonsWorld::DATA_DIR, "season-*.yml")].count ).to eql 2
   end
 
-  it "should load an existing season from file" do
+  it "should load the data on demand when looking for one season" do
     purge_test_data
     create_season.save
     expect( SimpsonsWorld::Season.find(1) ).to_not be(nil)
   end
 
-  it "should not load a non-existant season from file" do
+  it "should load the data on demand when requesting all seasons" do
+    purge_test_data
+    create_season.save
+    expect( SimpsonsWorld::Season.all ).to_not be(nil)
+  end
+
+  it "shouldn't reload the data once it's been loaded" do
+    purge_test_data
+    create_season.save
+    expect( SimpsonsWorld::Season.all.object_id ).to eql( SimpsonsWorld::Season.all.object_id )
+  end
+
+  it "should not find a non-existent season" do
     purge_test_data
     create_season.save
     expect( SimpsonsWorld::Season.find(50) ).to be(nil)
