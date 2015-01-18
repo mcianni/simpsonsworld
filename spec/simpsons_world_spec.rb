@@ -2,6 +2,14 @@ require 'spec_helper'
 require 'fileutils'
 
 describe SimpsonsWorld do
+  describe "test suite" do
+    it 'should not touch the real data dir' do
+      expect( SimpsonsWorld::DATA_DIR ).to include("/spec/")
+    end
+  end
+end
+
+describe SimpsonsWorld do
   EPISODE_COUNT = 5
 
   let(:data) { 
@@ -45,15 +53,25 @@ describe SimpsonsWorld do
   it "should save the data to file" do
     purge_test_data
     create_season.save
-    expect File.exists?(File.join(SimpsonsWorld::DATA_DIR, "season-#{@season.number}.yml"))
+    expect File.exists?(SimpsonsWorld::Season::to_file_path(@season.number))
   end
 
   it "should save multiple seasons to multiple files" do
     purge_test_data
     create_season.save
-    expect File.exists?(File.join(SimpsonsWorld::DATA_DIR, "season-#{@season.number}.yml"))
-
     create_season(data2).save
-    expect File.exists?(File.join(SimpsonsWorld::DATA_DIR, "season-#{@season.number}.yml"))
+    expect( Dir[File.join(SimpsonsWorld::DATA_DIR, "season-*.yml")].count ).to eql 2
+  end
+
+  it "should load an existing season from file" do
+    purge_test_data
+    create_season.save
+    expect( SimpsonsWorld::Season.find(1) ).to_not be(nil)
+  end
+
+  it "should not load a non-existant season from file" do
+    purge_test_data
+    create_season.save
+    expect( SimpsonsWorld::Season.find(50) ).to be(nil)
   end
 end
