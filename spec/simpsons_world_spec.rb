@@ -12,16 +12,16 @@ end
 describe SimpsonsWorld do
   EPISODE_COUNT = 5
 
-  let(:data) { 
-    [1, (1..EPISODE_COUNT).map { |i| 
-      { title: "Episode #{i}", description: "Description #{i}", url: "/path/#{i}" }
-    }]
+  let(:season_one_data) { 
+    [ 1, (1..EPISODE_COUNT).map { |i| 
+       [i, { title: "Episode #{i}", description: "Description #{i}", url: "/path/#{i}" }]
+      }.to_h ]
   }
   
-  let(:data2) { data.tap { |i| i[0] = 2 } }
+  let(:season_two_data) { season_one_data.tap { |i| i[0] = 2 } }
 
-  def create_season d=data
-    @season = SimpsonsWorld::Season.new(*d)
+  def create_season data=nil
+    @season = SimpsonsWorld::Season.new(*(data || season_one_data))
   end
 
   def purge_test_data
@@ -60,7 +60,7 @@ describe SimpsonsWorld do
   it "should save multiple seasons to multiple files" do
     purge_test_data
     create_season.save
-    create_season(data2).save
+    create_season(season_two_data).save
     expect( Dir[File.join(SimpsonsWorld::DATA_DIR, "season-*.yml")].count ).to eql 2
   end
 

@@ -11,13 +11,15 @@ module SimpsonsWorld
       seasons = doc.css(".chapters-wrapper")
       seasons.each_with_index do |season, i|
         number = season.attr 'data-season-number'
-        episodes = season.css("ul.items > li").map { |episode|
-          {
-            title:       episode.css('.category-thumb-expanded .thumbnail-text').text,
-            description: episode.css('.category-thumb-expanded .thumbnail-extra-text').text,
-            url:         episode.css('a')[0]['href']
-          }
-        }
+        episodes = season.css("ul.items > li").map.with_index { |episode, j|
+          [ j+1, 
+            {
+              title:       episode.css('.category-thumb-expanded .thumbnail-text').text,
+              description: episode.css('.category-thumb-expanded .thumbnail-extra-text').text,
+              url:         episode.css('a')[0]['href']
+            }
+          ]
+        }.to_h
         SimpsonsWorld::Season.new(number, episodes)
       end
     end
