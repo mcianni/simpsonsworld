@@ -10,22 +10,22 @@ describe SimpsonsWorld do
 end
 
 describe SimpsonsWorld do
+  include Helpers
+  include SimpsonsWorld::ViewHelpers
+
   EPISODE_COUNT = 5
 
-  let(:season_one_data) { 
-    [ 1, (1..EPISODE_COUNT).map { |i| 
-       [i, { title: "Episode #{i}", description: "Description #{i}", url: "/path/#{i}" }]
-      }.to_h ]
-  }
-  
-  let(:season_two_data) { season_one_data.tap { |i| i[0] = 2 } }
+  let(:season_one_data)   { season_data }
+  let(:season_two_data)   { season_data(season: 2) }
+  let(:season_three_data) { season_data(season: 3) }
 
   def create_season data=nil
+    #SimpsonsWorld::Season.reset_all
     @season = SimpsonsWorld::Season.new(*(data || season_one_data))
   end
 
   def purge_test_data
-    FileUtils.rm_rf(File.dirname(__FILE__) + "/data/*")
+    FileUtils.rm_rf(Dir.glob(File.join(File.dirname(__FILE__), "/data/*.yml")))
   end
 
   #it 'successfully parses the current markup' do
@@ -53,38 +53,76 @@ describe SimpsonsWorld do
  
   it "should save the data to file" do
     purge_test_data
-    create_season.save
+    create_season
     expect File.exists?(SimpsonsWorld::Season::to_file_path(@season.number))
   end
 
   it "should save multiple seasons to multiple files" do
     purge_test_data
-    create_season.save
-    create_season(season_two_data).save
+    create_season and create_season(season_two_data)
     expect( Dir[File.join(SimpsonsWorld::DATA_DIR, "season-*.yml")].count ).to eql 2
   end
 
   it "should load the data on demand when looking for one season" do
     purge_test_data
-    create_season.save
+    create_season
     expect( SimpsonsWorld::Season.find(1) ).to_not be(nil)
   end
 
   it "should load the data on demand when requesting all seasons" do
     purge_test_data
-    create_season.save
+    create_season
     expect( SimpsonsWorld::Season.all ).to_not be(nil)
   end
 
   it "shouldn't reload the data once it's been loaded" do
     purge_test_data
-    create_season.save
+    create_season
     expect( SimpsonsWorld::Season.all.object_id ).to eql( SimpsonsWorld::Season.all.object_id )
   end
 
   it "should not find a non-existent season" do
     purge_test_data
-    create_season.save
+    create_season
     expect( SimpsonsWorld::Season.find(50) ).to be(nil)
   end
+
+  it 'should return the correct episode' do
+    create_season
+    expect( @season.episodes[1] ).to eql(season_one_data[1][1])
+  end
+  
+  it 'should set the correct path' do
+    create_season
+    expect( @season.episodes[1][:url] ).to eql("/path/s1-e1")
+  end
+
+  describe "url finders" do
+    it 'should return the correct url for episode number' do
+      create_season
+      expect( SimpsonsWorld::ViewHelpers::episode_url(episode: 1) ).to \
+        eql("http://www.simpsonsworld.com/path/s1-e1")
+    end
+
+    it 'should return the correct url for season and episode number' do
+      create_season
+      expect( SimpsonsWorld::ViewHelpers::episode_url(season: 1, episode: 1) ).to match(/s1-e1/)
+    end
+
+    it 'should return the correct url for a season 2 episode' do
+      create_season and create_season(season_two_data)
+      expect( SimpsonsWorld::ViewHelpers::episode_url(episode: 6) ).to match(/s2-e1/)
+    end
+   
+    it 'should return the correct url for a season 1 finale' do
+      create_season and create_season(season_two_data)
+      expect( SimpsonsWorld::ViewHelpers::episode_url(episode: 5) ).to match(/s1-e5/)
+    end
+
+    it 'should return the correct url for a season 3 episode' do
+      create_season and create_season(season_two_data) and create_season(season_three_data)
+      expect( SimpsonsWorld::ViewHelpers::episode_url(episode: 14) ).to match(/s3-e4/)
+    end
+  end
+
 end

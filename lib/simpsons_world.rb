@@ -1,6 +1,7 @@
 require "simpsons_world/version"
 require 'simpsons_world/season'
 require 'simpsons_world/scrape'
+require 'simpsons_world/view_helpers'
 require 'pry'
 
 module SimpsonsWorld

@@ -4,12 +4,12 @@ module SimpsonsWorld
     attr_reader :number, :episodes
 
     def initialize number, episodes
-      @number, @episodes = number, episodes
+      @number, @episodes, @@all = number, episodes, nil
       save
     end
 
     def save
-      File.open(Season::to_file_path(@number), 'w') do |file|
+      File.open(self.class.to_file_path(@number), 'w') do |file|
         file.write [@number, @episodes].to_yaml
       end
     end
