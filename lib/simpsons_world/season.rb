@@ -4,7 +4,7 @@ module SimpsonsWorld
     attr_reader :number, :episodes
 
     def initialize number, episodes
-      @number, @episodes, @@all = number, episodes, nil
+      @number, @episodes, @@all = number.to_i, episodes, nil
       save
     end
 
