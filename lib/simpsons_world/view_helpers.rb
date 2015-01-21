@@ -1,7 +1,7 @@
 module SimpsonsWorld
   module ViewHelpers
 
-    def self.episode_url season:nil, episode:
+    def simpsons_world_episode_url season:nil, episode:
       season = 1 + Season.all.take_while { |k, episodes|
         episode -= episodes.size if episode > episodes.size
       }.size unless season

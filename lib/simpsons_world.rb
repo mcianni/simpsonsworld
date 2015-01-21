@@ -9,3 +9,5 @@ module SimpsonsWorld
     File.join(File.dirname(__FILE__), '..', 'spec', 'data') :
     File.join(File.dirname(__FILE__), 'data')
 end
+
+require 'simpsons_world/railtie' if defined?(Rails)

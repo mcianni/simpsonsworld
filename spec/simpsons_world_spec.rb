@@ -92,28 +92,33 @@ describe SimpsonsWorld do
   end
 
   describe "url finders" do
+    before(:all) do
+      @view = Object.new
+      @view.extend(SimpsonsWorld::ViewHelpers)
+    end
+
     it 'should return the correct url for episode number' do
-      expect( SimpsonsWorld::ViewHelpers::episode_url(episode: 1) ).to \
+      expect( @view.simpsons_world_episode_url(episode: 1) ).to \
         eql("http://www.simpsonsworld.com/path/s1-e1")
     end
 
     it 'should return the correct url for season and episode number' do
-      expect( SimpsonsWorld::ViewHelpers::episode_url(season: 1, episode: 1) ).to match(/s1-e1/)
+      expect( @view.simpsons_world_episode_url(season: 1, episode: 1) ).to match(/s1-e1/)
     end
 
     it 'should return the correct url for a season 2 episode' do
       create_season(season_two_data)
-      expect( SimpsonsWorld::ViewHelpers::episode_url(episode: 6) ).to match(/s2-e1/)
+      expect( @view.simpsons_world_episode_url(episode: 6) ).to match(/s2-e1/)
     end
    
     it 'should return the correct url for a season 1 finale' do
       create_season(season_two_data)
-      expect( SimpsonsWorld::ViewHelpers::episode_url(episode: 5) ).to match(/s1-e5/)
+      expect( @view.simpsons_world_episode_url(episode: 5) ).to match(/s1-e5/)
     end
 
     it 'should return the correct url for a season 3 episode' do
       create_season(season_two_data) and create_season(season_three_data)
-      expect( SimpsonsWorld::ViewHelpers::episode_url(episode: 14) ).to match(/s3-e4/)
+      expect( @view.simpsons_world_episode_url(episode: 14) ).to match(/s3-e4/)
     end
   end
 
