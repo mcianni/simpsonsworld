@@ -27,7 +27,7 @@ simpsons_world_episode_url(season: 4, episode: 12) # http://www.simpsonsworld.co
 simpsons_world_episode_url(episode: 71)            # http://www.simpsonsworld.com/video/306386499796
 ```
 
-See it in action at [The Episode Where](theepisodewhere.com).
+See it in action at [The Episode Where](http://theepisodewhere.com).
 
 ## Contributing
 
