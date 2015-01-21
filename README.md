@@ -1,6 +1,6 @@
 # SimpsonsWorld
 
-TODO: Write a gem description
+Link to Simpsons episodes on the simpsonsworld.com website. Using either a season and episode number or an overall episode number this gem will generate a link to the episode streaming on the Simpsons World website.
 
 ## Installation
 
@@ -20,7 +20,12 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Use the view helper to get a full url to an episode.
+
+```ruby
+simpsons_world_episode_url(season: 4, episode: 12) # http://www.simpsonsworld.com/video/306386499796
+simpsons_world_episode_url(episode: 71)            # http://www.simpsonsworld.com/video/306386499796
+```
 
 ## Contributing
 
@@ -29,3 +34,6 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+
+## Disclaimer
+This is *not* affiliated, in any way, with The Simpsons or Fox.

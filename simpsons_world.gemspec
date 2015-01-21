@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = SimpsonsWorld::VERSION
   spec.authors       = ["mcianni"]
   spec.email         = ["mcianni@gmail.com"]
-  spec.summary       = %q{Link to episodes on SimpsonsWorld}
-  spec.description   = %q{Link to seasons and episodes on the comprehensive Simpsons World website.}
+  spec.summary       = %q{Link to episodes on the Simpsons World website.}
+  spec.description   = %q{Generate a full url from an episode number to a Simpsons episode streaming on SimpsonsWorld.com.}
   spec.homepage      = "https://github.com/mcianni/simpsonsworld"
   spec.license       = "MIT"
 
