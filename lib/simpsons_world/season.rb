@@ -24,7 +24,7 @@ module SimpsonsWorld
       end
 
       def find number
-        all[number]
+        all[number] or raise NoEpisodeError, 'Season not found'
       end
 
       def to_file_path number

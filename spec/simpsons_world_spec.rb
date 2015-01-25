@@ -80,7 +80,7 @@ describe SimpsonsWorld do
   end
 
   it "should not find a non-existent season" do
-    expect( SimpsonsWorld::Season.find(50) ).to be(nil)
+    expect { SimpsonsWorld::Season.find(50) }.to raise_error
   end
 
   it 'should return the correct episode' do
@@ -119,6 +119,14 @@ describe SimpsonsWorld do
     it 'should return the correct url for a season 3 episode' do
       create_season(season_two_data) and create_season(season_three_data)
       expect( @view.simpsons_world_episode_url(episode: 14) ).to match(/s3-e4/)
+    end
+
+    it "should return an empty string if the season doesn't exist" do
+      expect( @view.simpsons_world_episode_url(season: 5, episode: 1) ).to eql('')
+    end
+
+    it "should return an empty string if the episode doesn't exist" do
+      expect( @view.simpsons_world_episode_url(episode: 9999) ).to eql('')
     end
   end
 
