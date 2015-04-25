@@ -1,6 +1,6 @@
 module SimpsonsWorld
   BASE_URL = "http://www.simpsonsworld.com"
-  EPISODES_URL = "/watch/episodes"
+  EPISODES_URL = "/browse/episodes"
 
   class Scrape
     require 'nokogiri'
