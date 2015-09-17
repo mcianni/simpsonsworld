@@ -86,7 +86,7 @@ describe SimpsonsWorld do
   it 'should return the correct episode' do
     expect( @season.episodes[1] ).to eql(season_one_data[1][1])
   end
-  
+
   it 'should set the correct path' do
     expect( @season.episodes[1][:url] ).to eql("/path/s1-e1")
   end
@@ -110,7 +110,7 @@ describe SimpsonsWorld do
       create_season(season_two_data)
       expect( @view.simpsons_world_episode_url(episode: 6) ).to match(/s2-e1/)
     end
-   
+
     it 'should return the correct url for a season 1 finale' do
       create_season(season_two_data)
       expect( @view.simpsons_world_episode_url(episode: 5) ).to match(/s1-e5/)
