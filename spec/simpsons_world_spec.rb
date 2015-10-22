@@ -96,6 +96,11 @@ describe SimpsonsWorld do
     expect( SimpsonsWorld::Scrape::clean_description("#{description} Presented by FXX.") ).to eql( description )
   end
 
+  it 'should strip "SEASON PREMIERE." in descriptions' do
+    description = 'Description 1.'
+    expect( SimpsonsWorld::Scrape::clean_description("#{description} SEASON PREMIERE.") ).to eql( description )
+  end
+
   describe "url finders" do
     before(:all) do
       @view = Object.new
