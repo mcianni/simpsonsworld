@@ -25,7 +25,7 @@ module SimpsonsWorld
     end
 
     def self.clean_description str
-      str.gsub(/Presented by FXX\./i, '').strip
+      str.gsub(/SEASON PREMIERE\.|Presented by FXX\./i, '').strip
     end
 
   end
