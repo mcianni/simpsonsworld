@@ -51,7 +51,7 @@ describe SimpsonsWorld do
   it "should set #{EPISODE_COUNT} episodes" do
     expect( @season.episodes.count ).to eql(EPISODE_COUNT)
   end
- 
+
   it "should save the data to file" do
     expect File.exists?(SimpsonsWorld::Season::to_file_path(@season.number))
   end
@@ -80,7 +80,7 @@ describe SimpsonsWorld do
   end
 
   it "should not find a non-existent season" do
-    expect { SimpsonsWorld::Season.find(50) }.to raise_error
+    expect { SimpsonsWorld::Season.find(50) }.to raise_exception SimpsonsWorld::NoEpisodeError
   end
 
   it 'should return the correct episode' do
@@ -89,6 +89,11 @@ describe SimpsonsWorld do
 
   it 'should set the correct path' do
     expect( @season.episodes[1][:url] ).to eql("/path/s1-e1")
+  end
+
+  it 'should strip "Presented by FXX." in descriptions' do
+    description = 'Description 1.'
+    expect( SimpsonsWorld::Scrape::clean_description("#{description} Presented by FXX.") ).to eql( description )
   end
 
   describe "url finders" do
