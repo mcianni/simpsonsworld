@@ -91,6 +91,14 @@ describe SimpsonsWorld do
     expect( @season.episodes[1][:url] ).to eql("/path/s1-e1")
   end
 
+  it 'should have an episode title' do
+    expect( @season.episodes[1][:title]).not_to be_nil
+  end
+
+  it 'should have a URL' do
+    expect( @season.episodes[1][:url]).not_to be_nil
+  end
+
   it 'should strip "Presented by FXX." in descriptions' do
     description = 'Description 1.'
     expect( SimpsonsWorld::Scrape::clean_description("#{description} Presented by FXX.") ).to eql( description )
